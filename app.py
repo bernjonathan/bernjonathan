@@ -70,8 +70,17 @@ with open(r"knn.pkl", "rb") as input_file:
 
 y_pred = svm.predict(predicting)
 clear_df['predict'] = y_pred[1:]
-clear_df[['caption','predict']].to_csv('output_svm.csv',index = False, sep = ';')
 
+test = pd.DataFrame(clear_df.predict.value_counts().reset_index()\
+                    .rename(columns={'index':'caption'}))
+output_df = clear_df.append(pd.Series(), ignore_index=True)
+output_df = pd.concat([output_df[['caption','predict']],test])
+output_df[['caption','predict']].to_csv('output_svm.csv',index = False, sep = ';')
+print(output_df)
 y_pred = knn.predict(predicting)
 clear_df['predict'] = y_pred[1:]
-clear_df[['caption','predict']].to_csv('output_knn.csv',index = False, sep = ';')
+test = pd.DataFrame(clear_df.predict.value_counts().reset_index()\
+                    .rename(columns={'index':'caption'}))
+output_df = output_df.append(pd.Series(), ignore_index=True)
+output_df = pd.concat([clear_df[['caption','predict']],test])
+output_df[['caption','predict']].to_csv('output_knn.csv',index = False, sep = ';')
