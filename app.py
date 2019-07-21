@@ -44,7 +44,7 @@ def clean_text(text):
 # clean text data
 clear_df["clean_caption"] = clear_df["caption"].apply(lambda x: clean_text(x))
 from sklearn.feature_extraction.text import TfidfVectorizer
-tfidf = TfidfVectorizer(min_df = 10)
+tfidf = TfidfVectorizer(min_df = 1)
 tfidf_result = tfidf.fit_transform(clear_df["clean_caption"]).toarray()
 tfidf_df = pd.DataFrame(tfidf_result, columns = tfidf.get_feature_names())
 tfidf_df.columns = ["word_" + str(x) for x in tfidf_df.columns]
